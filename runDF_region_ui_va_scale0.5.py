@@ -438,11 +438,31 @@ class MyClass(QtCore.QObject):
         #     fdir = './autosave/'
         fname = fdir + f'{formatted_time}_raw.bin'
 
-        text = "raw IMG saved: " + fname
-        self.Cam_img.tofile(fname)
-        print('... ' + text)
+        # text = "raw IMG saved: " + fname
+        # self.Cam_img.tofile(fname)
+        # print('... ' + text)
+        # if mode == 1:
+        #     self.TStatus.setPlainText(text)
+
+        # all channel
+        for channel_name, channel_data in self.channel_img_dict.items():
+            # 忘記怎麼抽了
+            # non_zero_mask = channel_data > 0
+            # channel_data = channel_data[non_zero_mask]  # 去除零值的區域
+
+            # 輸出檔案名
+            fname = f"{fdir}{formatted_time}_{channel_name}_raw.bin"
+
+            # 儲存每個 channel 資料
+            channel_data.tofile(fname)
+            print(f'... {channel_name} raw IMG saved: {fname}')
+
+        text = "RGB img and 4 channel imgs saved"
+        self.TStatus.setPlainText(text)
+
         if mode == 1:
-            self.TStatus.setPlainText(text)
+            print(text)  # 可以選擇輸出到終端
+
 
     def on_but_clicked_SaveROI(self):
         self.TStatus.setPlainText("Processing ROI")
